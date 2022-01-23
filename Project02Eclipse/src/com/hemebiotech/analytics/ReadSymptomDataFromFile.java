@@ -45,6 +45,7 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
+				System.exit(1);
 			} finally {
 				try {
 					if (fileReader != null) {
@@ -52,6 +53,7 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
+					System.exit(2);
 				}
 			}
 		}

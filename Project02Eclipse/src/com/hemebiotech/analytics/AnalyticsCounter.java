@@ -1,7 +1,6 @@
 package com.hemebiotech.analytics;
 
-import java.util.List;
-import java.util.Map;
+import java.io.FileWriter;
 
 public class AnalyticsCounter {
 	/**
@@ -21,29 +20,11 @@ public class AnalyticsCounter {
 			System.exit(1);
 		}
 
-		// Read File
-		List<String> listSymptoms = null;
-		try {
-			ReadSymptomDataFromFile readSymptomDataFromFile = new ReadSymptomDataFromFile(args[0]);
-			listSymptoms = readSymptomDataFromFile.GetSymptoms();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(2);
-		}
 
-		// analyze symptoms: count
-		Map<String, Integer> countSymptoms = null;
-		AnalyzeSymptoms analyzeSymptoms = new AnalyzeSymptoms();
-		countSymptoms = analyzeSymptoms.countSymptoms(listSymptoms);
-
-		// generate result
-		try {
-			WriteSymptomDataToFile writeSymptomDataToFile = new WriteSymptomDataToFile(args[1]);
-			writeSymptomDataToFile.WriteCountSymptoms(countSymptoms);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(3);
-		}
+		ISymptomReader reader = new ReadSymptomDataFromFile(args[0]);
+		FileWriter writer = new FileWriter(args[1]);
+		ProcessOut result = new ProcessOut(reader, writer);
+		result.ProcessOut();
 
 		// output status
 		System.out.println("Info: Job finish");
