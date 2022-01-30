@@ -6,36 +6,44 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * class Process the symptoms
+ * class process the symptoms
  */
 
 public class ProcessOut {
 
-    ReadSymptomDataFromFile reader;
-    FileWriter writer;
+    private ISymptomReader reader;
+    private FileWriter writer;
 
+    /**
+     * Create Object with input file and output file
+     * @param reader: Input file
+     * @param writer: Output file
+     */
     ProcessOut(ISymptomReader reader, FileWriter writer) {
-        this.reader = (ReadSymptomDataFromFile) reader;
+        this.reader = reader;
         this.writer = writer;
     }
 
     /**
-     * @Function: ProcessOut
-     * @Description: read, count, sort , write result
-     * @param: no input param
-     * @output: write results in the file
+     * read, count/sort , write result
      */
-    public void ProcessOut() {
+    public void countSymptom() {
 
-        // Read File
-        List<String> listSymptoms = null;
-        listSymptoms = reader.GetSymptoms();
+        List<String> listSymptoms = reader.GetSymptoms();
+        TreeMap<String, Integer> sortCountSymptoms = countFromList(listSymptoms);
+        writeResult (sortCountSymptoms);
+    }
 
-        // Cumul symptoms
-        TreeMap<String, Integer> sortCountSymptoms = new TreeMap<String, Integer>();
+    /**
+     * Count symptoms from a list of symptoms, then put the result in a TreeMap <symptom,count>
+     * @param listSymptoms: List<symptoms>
+     * @return TreeMap <Symptoms, count>
+     */
+    private TreeMap<String, Integer> countFromList(List<String> listSymptoms) {
+        TreeMap<String, Integer> sortCountSymptoms = new TreeMap<>();
         if (listSymptoms.size() != 0) {
             for (int i = 1; i < listSymptoms.size(); i++) {
-                if (sortCountSymptoms.containsKey(listSymptoms.get(i)) == false) {
+                if (!sortCountSymptoms.containsKey(listSymptoms.get(i))) {
                     sortCountSymptoms.put(listSymptoms.get(i), 1);
                 } else {
                     Integer valSymptom = sortCountSymptoms.get(listSymptoms.get(i));
@@ -43,9 +51,16 @@ public class ProcessOut {
                     sortCountSymptoms.replace(listSymptoms.get(i), valSymptom);
                 }
             }
-        }
 
-        // Write result
+        }
+        return sortCountSymptoms;
+    }
+
+    /**
+     * write Map of <symptom,count> into file writer
+     * @param sortCountSymptoms: Map<symptoms,count>
+     */
+    private void writeResult (Map<String, Integer> sortCountSymptoms ){
         BufferedWriter bufWriter = null;
         try {
             bufWriter = new BufferedWriter(writer);
@@ -55,7 +70,7 @@ public class ProcessOut {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(2);
+            System.exit(1);
         } finally {
             try {
                 if (bufWriter != null) {
@@ -63,8 +78,10 @@ public class ProcessOut {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                System.exit(3);
+                System.exit(2);
             }
         }
+
     }
+
 }

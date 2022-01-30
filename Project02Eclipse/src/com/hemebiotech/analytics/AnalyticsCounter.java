@@ -4,9 +4,8 @@ import java.io.FileWriter;
 
 public class AnalyticsCounter {
 	/**
-	 * @Function: main
-	 * @Description: count the number of symptoms
-	 * @param: $1: input symptoms file (format : symptom)
+	 * count symptoms
+	 * @param args: $1: input symptoms file (format : symptom)
 	 *         $2: output result file (format: symptom : number)
 	 */
 	public static void main(String args[]) throws Exception {
@@ -24,10 +23,11 @@ public class AnalyticsCounter {
 		ISymptomReader reader = new ReadSymptomDataFromFile(args[0]);
 		FileWriter writer = new FileWriter(args[1]);
 		ProcessOut result = new ProcessOut(reader, writer);
-		result.ProcessOut();
+		result.countSymptom();
 
 		// output status
 		System.out.println("Info: Job finish");
 
 	}
 }
+

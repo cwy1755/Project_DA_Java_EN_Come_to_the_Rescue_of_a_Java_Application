@@ -14,8 +14,7 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 	private String filepath;
 	
 	/**
-	 * @name: ReadSymptomDataFromFile
-	 * @description: create an objet whith the filepath
+	 * create an objet with the filepath
 	 * @param filepath a full or partial path to file with symptom strings in it, one per line
 	 */
 	public ReadSymptomDataFromFile (String filepath) {
@@ -23,15 +22,13 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 	}
 
 	/**
-	 * @name: GetSymptoms
-	 * @description: read the file of symptoms
-	 * @param no input
-	 * Format of records: name of symptoms
+	 * open the file , read the file of symptoms, put the symptoms in a List<>, close the file
+	 * @return a List<Symptoms>
 	 */
 	@Override
 	public List<String> GetSymptoms() {
-		ArrayList<String> result = new ArrayList<String>();
-		
+		ArrayList<String> result = new ArrayList<>();
+
 		if (filepath != null) {
 			FileReader fileReader = null;
 			try {
@@ -57,8 +54,6 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 				}
 			}
 		}
-		
 		return result;
 	}
-
 }
